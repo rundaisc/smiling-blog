@@ -4,7 +4,7 @@ import "time"
 
 type BaseResponse struct {
 	Code ResponseCode `json:"code"`
-	Msg  string       `json:"msg,omitempty"`
+	Msg  string       `json:"message,omitempty"`
 	Data interface{}  `json:"data,omitempty"`
 	Time int64        `json:"time,omitempty"`
 }

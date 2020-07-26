@@ -8,3 +8,7 @@ type Site struct {
 	Cover       string `gorm:"size:255" json:"cover"`
 	Code        string `gorm:"text" json:"code"`
 }
+
+func (s *Site) TableName() string {
+	return "sites"
+}

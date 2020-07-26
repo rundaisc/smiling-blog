@@ -1,21 +1,34 @@
 package dao
 
+import (
+	"smiling-blog/databases"
+	"smiling-blog/entity"
+)
+
 type SiteDao interface {
-	Save()
-	GetInfo()
+	Save(info *entity.Site) error
+	GetInfo() *entity.Site
 }
 
 type Site struct {
+	db databases.Db
 }
 
 func NewSiteDao() SiteDao {
-	return &Site{}
+	return &Site{
+		db: databases.Db{},
+	}
 }
 
-func (site *Site) Save() {
+// 保存site信息
+func (sd *Site) Save(info *entity.Site) error {
+	return sd.db.DB().Save(info).Error
 
 }
 
-func (site *Site) GetInfo() {
-
+// 获取site信息
+func (sd *Site) GetInfo() *entity.Site {
+	siteInfo := entity.Site{}
+	sd.db.DB().First(&siteInfo)
+	return &siteInfo
 }

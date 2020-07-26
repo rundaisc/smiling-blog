@@ -5,7 +5,6 @@ import (
 	"os"
 	"path"
 	"smiling-blog/config"
-	"smiling-blog/middleware"
 	"smiling-blog/router"
 	"smiling-blog/tools/slog"
 )
@@ -19,9 +18,9 @@ func main() {
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	app.Use(middleware.RequestMonitor())
+	app.Use(gin.Logger())
+	app.Use(gin.Recovery())
 	app.Run(config.GetAppAddr())
-
 }
 
 func configInit() {
@@ -32,4 +31,8 @@ func configInit() {
 
 func logInit() {
 	slog.InitLogger(config.Configs.Log)
+}
+
+func MysqlInit() {
+
 }

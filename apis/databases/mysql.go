@@ -14,6 +14,9 @@ type Db struct {
 }
 
 func (slf *Db) DB() *gorm.DB {
+	if slf.db == nil {
+		slf.StartDb()
+	}
 	return slf.db
 }
 

@@ -2,18 +2,22 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"smiling-blog/controller"
 )
 
 func GetApp() *gin.Engine {
 	app := gin.New()
+
 	backend := app.Group("/api/backend")
-	//backend.POST("/site/save",controller.SiteController.Save)
-	//backend.POST("/site/info",controller.SiteController.Info)
-	backend.GET("/test", func(context *gin.Context) {
-		context.JSON(http.StatusOK, nil)
-		return
-	})
+	{
+		site := controller.NewSite()
+		backend.POST("/site/save", site.Save)
+		backend.GET("/site/info", site.Info)
+
+		admin := controller.NewAdmin()
+		backend.POST("/login", admin.Login)
+
+	}
 
 	return app
 }
