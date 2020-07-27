@@ -18,3 +18,8 @@ log:
   level: info
   path: .\runtime
   filename:  smiling
+qiniu:
+  ak: xxxx
+  sk: xxxx
+  bucket: xxxxxxx
+  url: http://image.daisc.net/

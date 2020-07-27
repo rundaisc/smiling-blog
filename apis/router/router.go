@@ -10,6 +10,9 @@ func GetApp() *gin.Engine {
 
 	backend := app.Group("/api/backend")
 	{
+		upload := controller.NewUpload()
+		backend.POST("/upload/image", upload.Images)
+
 		site := controller.NewSite()
 		backend.POST("/site/save", site.Save)
 		backend.GET("/site/info", site.Info)

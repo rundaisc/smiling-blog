@@ -18,6 +18,7 @@ type Config struct {
 	Redis    redisConfig    `yaml:"qr_redis"`
 	App      AppConfig      `yaml:"app"`
 	Log      slog.LogConfig `yaml:"log"`
+	QiNiu    qiNiuConfig    `yaml:"qiniu"`
 }
 
 /**
@@ -50,6 +51,14 @@ type AppConfig struct {
 	Addr  string `yaml:"addr"`
 	Port  int    `yaml:"port"`
 	Debug bool   `yaml:"debug"`
+}
+
+// 七牛云配置
+type qiNiuConfig struct {
+	Ak     string `yaml:"ak"`
+	Sk     string `yaml:"sk"`
+	Bucket string `yaml:"bucket"`
+	Url    string `yaml:"url"`
 }
 
 func Init(fileName string) {
