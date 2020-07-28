@@ -11,15 +11,14 @@ export function saveFlink(data) {
 
 export function getList(params) {
   return request({
-    url: '/api/backend/flink',
+    url: '/api/backend/flink/list',
     method: 'get',
     params
   })
 }
 export function deleteFlink(data) {
   return request({
-    url: '/api/backend/flink',
+    url: '/api/backend/flink/'+data.id,
     method: 'delete',
-    data
   })
 }

@@ -11,15 +11,14 @@ export function saveNav(data) {
 
 export function getList(params) {
   return request({
-    url: '/api/backend/nav',
+    url: '/api/backend/nav/list',
     method: 'get',
     params
   })
 }
 export function deleteNav(data) {
   return request({
-    url: '/api/backend/nav',
+    url: '/api/backend/nav/'+data.id,
     method: 'delete',
-    data
   })
 }
