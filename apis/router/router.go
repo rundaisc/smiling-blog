@@ -50,6 +50,14 @@ func GetApp() *gin.Engine {
 			backend.DELETE("/nav/:id", nav.Delete)
 		}
 
+		// 文章管理
+		article := controller.NewArticle()
+		{
+			backend.GET("/article/list", article.List)
+			backend.POST("/article/save", article.Save)
+			backend.DELETE("/article/:id", article.Delete)
+		}
+
 	}
 
 	return app
