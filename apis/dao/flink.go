@@ -9,7 +9,13 @@ type FlinkDao interface {
 	GetList() []entity.Flink
 	GetById(id int) *entity.Flink
 	SaveLink(flink *entity.Flink) error
+	UpdateLink(flink *entity.Flink, update map[string]interface{}) error
 	DeleteById(id int) error
+}
+
+//更新有情连接
+func (slf *flink) UpdateLink(flink *entity.Flink, update map[string]interface{}) error {
+	return slf.db.DB().Model(flink).Updates(update).Error
 }
 
 type flink struct {
@@ -24,7 +30,7 @@ func NewFlinkDao() FlinkDao {
 
 // 根据id 获取Link
 func (slf *flink) GetById(id int) *entity.Flink {
-	link := entity.Flink{}
+	link := entity.Flink{ID: id}
 	slf.db.DB().First(&link)
 	return &link
 }

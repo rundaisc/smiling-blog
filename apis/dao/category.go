@@ -30,7 +30,7 @@ func NewCategoryDao() CategoryDao {
 
 // 根据id 获取
 func (slf *category) GetById(id int) *entity.Category {
-	category := entity.Category{}
+	category := entity.Category{ID: id}
 	slf.db.DB().First(&category)
 	return &category
 }

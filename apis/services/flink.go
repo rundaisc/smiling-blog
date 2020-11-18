@@ -5,6 +5,7 @@ import (
 	"smiling-blog/entity"
 	"smiling-blog/repo/request"
 	"smiling-blog/tools"
+	"smiling-blog/tools/slog"
 )
 
 type FlinkServices interface {
@@ -36,14 +37,26 @@ func (slf *flink) Save(params *request.FlinkSave) tools.ResponseCode {
 		if link.ID == 0 {
 			return tools.FlinkNotFound
 		}
-	}
-	link.LinkName = params.LinkName
-	link.Url = params.Url
-	link.Sort = params.Sort
-	link.IsShow = params.IsShow
+		update := map[string]interface{}{
+			"link_name": params.LinkName,
+			"url":       params.Url,
+			"sort":      params.Sort,
+			"is_show":   params.IsShow,
+		}
+		if err := slf.FlinkDao.UpdateLink(link, update); err != nil {
+			slog.Error(err)
+			return tools.FlinkSaveFailed
+		}
 
-	if err := slf.FlinkDao.SaveLink(link); err != nil {
-		return tools.FlinkSaveFailed
+	} else {
+		link.LinkName = params.LinkName
+		link.Url = params.Url
+		link.Sort = params.Sort
+		link.IsShow = params.IsShow
+		if err := slf.FlinkDao.SaveLink(link); err != nil {
+			slog.Error(err)
+			return tools.FlinkSaveFailed
+		}
 	}
 
 	return tools.OK

@@ -8,8 +8,13 @@ import (
 type NavDao interface {
 	GetList() []entity.Nav
 	GetById(id int) *entity.Nav
-	SaveNav(nav *entity.Nav) error
+	CreateNav(nav *entity.Nav) error
 	DeleteById(id int) error
+	UpdateNav(nav *entity.Nav, updateData map[string]interface{}) error
+}
+
+func (slf *nav) UpdateNav(nav *entity.Nav, updateData map[string]interface{}) error {
+	return slf.db.DB().Model(nav).Updates(updateData).Error
 }
 
 type nav struct {
@@ -24,13 +29,13 @@ func NewNavDao() NavDao {
 
 // 根据id 获取
 func (slf *nav) GetById(id int) *entity.Nav {
-	nav := entity.Nav{}
+	nav := entity.Nav{ID: id}
 	slf.db.DB().First(&nav)
 	return &nav
 }
 
 // 保存
-func (slf *nav) SaveNav(nav *entity.Nav) error {
+func (slf *nav) CreateNav(nav *entity.Nav) error {
 	return slf.db.DB().Save(nav).Error
 }
 

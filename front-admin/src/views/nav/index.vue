@@ -133,6 +133,9 @@ export default {
       },
       handleClick(row){
         let params = row;
+        if (params.category_id<1){
+          params.category_id = ''
+        }
         this.form = params;
         this.dialogFormVisible = true;
       },
