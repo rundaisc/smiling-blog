@@ -8,12 +8,18 @@ import (
 type CategoryDao interface {
 	GetList() []entity.Category
 	GetById(id int) *entity.Category
-	SaveCategory(category *entity.Category) error
+	CreateCategory(category *entity.Category) error
 	DeleteById(id int) error
+	UpdateCategory(category *entity.Category, updateData map[string]interface{}) error
 }
 
 type category struct {
 	db databases.Db
+}
+
+func (slf *category) UpdateCategory(category *entity.Category, updateData map[string]interface{}) error {
+	return slf.db.DB().Model(category).Updates(updateData).Error
+
 }
 
 func NewCategoryDao() CategoryDao {
@@ -30,7 +36,7 @@ func (slf *category) GetById(id int) *entity.Category {
 }
 
 // 保存
-func (slf *category) SaveCategory(category *entity.Category) error {
+func (slf *category) CreateCategory(category *entity.Category) error {
 	return slf.db.DB().Save(category).Error
 }
 

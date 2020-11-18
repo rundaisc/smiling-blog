@@ -10,10 +10,18 @@ import (
 type ArticleRelationDao interface {
 	DeleteByArticleId(aid int, trans interface{}) error
 	Create(aid int, tagList []string, trans interface{}) error
+	GetTaglistById(id int) []entity.ArticleTagRelation
 }
 
 type articleRelation struct {
 	db databases.Db
+}
+
+// 获取文章tag列表
+func (a articleRelation) GetTaglistById(id int) []entity.ArticleTagRelation {
+	list := []entity.ArticleTagRelation{}
+	a.db.DB().Table("article_tag_relations").Select("tag").Where("article_id=?", id).Scan(&list)
+	return list
 }
 
 // 保存文章标签

@@ -5,6 +5,7 @@ import (
 	"smiling-blog/entity"
 	"smiling-blog/repo/request"
 	"smiling-blog/tools"
+	"smiling-blog/tools/slog"
 )
 
 type CategoryServices interface {
@@ -36,13 +37,25 @@ func (slf *category) Save(params *request.CategorySave) tools.ResponseCode {
 		if category.ID == 0 {
 			return tools.CategoryNotFound
 		}
+		updateData := map[string]interface{}{
+			"is_show":       params.IsShow,
+			"sort":          params.Sort,
+			"category_name": params.CategoryName,
+		}
+		if err := slf.categoryDao.UpdateCategory(category, updateData); err != nil {
+			slog.Log.Error(err)
+			return tools.CategorySaveFailed
+		}
+	} else {
+		category.IsShow = params.IsShow
+		category.Sort = params.Sort
+		category.CategoryName = params.CategoryName
+		if err := slf.categoryDao.CreateCategory(category); err != nil {
+			slog.Log.Error(err)
+			return tools.CategorySaveFailed
+		}
 	}
-	category.IsShow = params.IsShow
-	category.Sort = params.Sort
-	category.CategoryName = params.CategoryName
-	if err := slf.categoryDao.SaveCategory(category); err != nil {
-		return tools.CategorySaveFailed
-	}
+
 	return tools.OK
 }
 
@@ -50,6 +63,7 @@ func (slf *category) Save(params *request.CategorySave) tools.ResponseCode {
 func (slf *category) Delete(id int) tools.ResponseCode {
 	err := slf.categoryDao.DeleteById(id)
 	if err != nil {
+		slog.Log.Error(err)
 		return tools.UnKnowError
 	}
 	return tools.OK

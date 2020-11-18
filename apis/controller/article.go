@@ -50,9 +50,9 @@ func (slf *article) Save(c *gin.Context) {
 		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.ValidateError, err.Error()))
 		return
 	}
-	code := slf.ArticleServices.Save(&params)
-	if code != tools.OK {
-		c.JSON(http.StatusOK, tools.BuildFailed(code))
+	err := slf.ArticleServices.Save(&params)
+	if err != nil {
+		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.UnKnowError, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, tools.BuildSuccess(nil))
@@ -66,10 +66,26 @@ func (slf *article) Delete(c *gin.Context) {
 		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.ValidateError, err.Error()))
 		return
 	}
-	code := slf.CategoryServices.Delete(id)
-	if code != tools.OK {
-		c.JSON(http.StatusOK, tools.BuildFailed(code))
+	err = slf.ArticleServices.Delete(id)
+	if err != nil {
+		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.UnKnowError, err.Error()))
 		return
 	}
 	c.JSON(http.StatusOK, tools.BuildSuccess(nil))
+}
+
+// 删除
+func (slf *article) Detail(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil || id == 0 {
+		slog.Error(err)
+		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.ValidateError, err.Error()))
+		return
+	}
+	detail, err := slf.ArticleServices.GetAdminDetail(id)
+	if err != nil {
+		c.JSON(http.StatusOK, tools.BuildFailedWithMsg(tools.UnKnowError, err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, tools.BuildSuccess(detail))
 }

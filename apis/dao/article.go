@@ -14,6 +14,7 @@ type ArticleDao interface {
 	GetById(id int, fields string) *entity.Article
 	UpdateById(id int, data map[string]interface{}, trans interface{}) error
 	Create(art *entity.Article, trans interface{}) error
+	DeleteById(id int, trans interface{}) error
 }
 
 type article struct {
@@ -78,6 +79,14 @@ func (a *article) getQueryBuild(params *request.ArticleSearchForm) *gorm.DB {
 		query = query.Unscoped().Where("articles.deleted_at is not null ")
 	}
 	return query
+}
+
+// 删除文章
+func (a *article) DeleteById(id int, trans interface{}) error {
+	if db, ok := trans.(*gorm.DB); ok {
+		return db.Where("id=?", id).Delete(entity.Article{}).Error
+	}
+	return a.db.DB().Where("id=?", id).Delete(entity.Article{}).Error
 }
 
 func NewArticleDao() ArticleDao {

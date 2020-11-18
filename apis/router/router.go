@@ -56,6 +56,7 @@ func GetApp() *gin.Engine {
 			backend.GET("/article/list", article.List)
 			backend.POST("/article/save", article.Save)
 			backend.DELETE("/article/:id", article.Delete)
+			backend.GET("/article/detail/:id", article.Detail)
 		}
 
 	}

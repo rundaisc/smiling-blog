@@ -8,13 +8,13 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img src="http://image.daisc.net/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200222142314.png" class="user-avatar">
-<!--          <i class="el-icon-caret-bottom" />-->
+          <i class="el-icon-caret-bottom" />
         </div>
-<!--        <el-dropdown-menu slot="dropdown" class="user-dropdown">-->
-<!--          <el-dropdown-item  @click.native="logout">-->
-<!--            <span style="display:block;">退出登录</span>-->
-<!--          </el-dropdown-item>-->
-<!--        </el-dropdown-menu>-->
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <el-dropdown-item  @click.native="logout">
+            <span style="display:block;">退出登录</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>

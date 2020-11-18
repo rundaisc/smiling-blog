@@ -13,6 +13,8 @@ import (
 type ArticleServices interface {
 	GetAdminList(params *request.ArticleSearchForm) (int, []response.ArticleDetail)
 	Save(params *request.ArticleForm) error
+	Delete(id int) error
+	GetAdminDetail(id int) (response.ArticleDetail, error)
 }
 
 type article struct {
@@ -20,9 +22,26 @@ type article struct {
 	ArticleRelationDao dao.ArticleRelationDao
 }
 
+func (a *article) GetAdminDetail(id int) (response.ArticleDetail, error) {
+	detail := response.ArticleDetail{}
+	article := a.ArticleDao.GetById(id, "*")
+	if article.ID == 0 {
+		return detail, errors.New("文章不存在")
+	}
+	detail.Article = *article
+	taglist := a.ArticleRelationDao.GetTaglistById(id)
+	outTgs := []string{}
+	for _, tag := range taglist {
+		outTgs = append(outTgs, tag.Tag)
+	}
+	detail.TagList = outTgs
+	return detail, nil
+}
+
 // 保存文章
 func (a *article) Save(params *request.ArticleForm) error {
-	trans := databases.Db{}.DB().Begin()
+	db := databases.Db{}
+	trans := db.DB().Begin()
 	art := &entity.Article{}
 	if params.Id > 0 {
 		art = a.ArticleDao.GetById(params.Id, "id")
@@ -94,6 +113,27 @@ func (a *article) GetAdminList(params *request.ArticleSearchForm) (int, []respon
 		}
 	}
 	return total, list
+}
+
+// 删除文章
+func (a *article) Delete(id int) error {
+	//删除文章
+	db := databases.Db{}
+	trans := db.DB().Begin()
+	err := a.ArticleDao.DeleteById(id, trans)
+	if err != nil {
+		trans.Rollback()
+		slog.Error(err)
+		return errors.New("删除文章失败")
+	}
+	//删除tag
+	if err := a.ArticleRelationDao.DeleteByArticleId(id, trans); err != nil {
+		trans.Rollback()
+		slog.Error(err)
+		return errors.New("删除文章失败")
+	}
+	trans.Commit()
+	return nil
 }
 
 func NewArticleServices() ArticleServices {

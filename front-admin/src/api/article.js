@@ -7,24 +7,18 @@ export function saveArticle(data) {
     data
   })
 }
-export function updateArticle(data) {
-  return request({
-    url: '/api/backend/article/save',
-    method: 'put',
-    data
-  })
-}
+
 
 export function getList(params) {
   return request({
-    url: '/api/backend/article',
+    url: '/api/backend/article/list',
     method: 'get',
     params
   })
 }
 export function deleteArticle(data) {
   return request({
-    url: '/api/backend/article',
+    url: '/api/backend/article/'+data.id,
     method: 'delete',
     data
   })
@@ -42,8 +36,8 @@ export function uploadImage(data) {
 }
 export function shoeArticle(params) {
   return request({
-    url: '/api/backend/article/detail',
+    url: '/api/backend/article/detail/'+params.article_id,
     method: 'get',
-    params
+    // params
   })
 }
