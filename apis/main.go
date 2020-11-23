@@ -18,6 +18,10 @@ func main() {
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	//视图文件
+	app.LoadHTMLGlob("./resources/views/**/*")
+
+	app.Static("static", "./resources/static")
 	app.Use(gin.Logger())
 	app.Use(gin.Recovery())
 	app.Run(config.GetAppAddr())

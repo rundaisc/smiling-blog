@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"smiling-blog/controller"
+	"smiling-blog/middleware"
 )
 
 func GetApp() *gin.Engine {
@@ -60,6 +61,11 @@ func GetApp() *gin.Engine {
 		}
 
 	}
+	home := controller.NewHome()
+	app.GET("/", home.Index).Use(middleware.FrontParams())
+	app.GET("/category/:categoryId", home.Index)
+	app.GET("/tag/:tag", home.Index)
+	app.GET("/posts/:articleId", home.Index)
 
 	return app
 }

@@ -7,6 +7,7 @@ type ArticleSearchForm struct {
 	IsRecycle   int    `json:"is_recycle" form:"is_recycle"`
 	IsDraft     int    `json:"is_draft" form:"is_draft"`
 	Page        int    `json:"page" form:"page"`
+	Tag         string `json:"tag"`
 	PageSize    int    `json:"page_size" form:"page_size"`
 }
 

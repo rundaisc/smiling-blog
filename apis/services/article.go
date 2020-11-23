@@ -15,6 +15,33 @@ type ArticleServices interface {
 	Save(params *request.ArticleForm) error
 	Delete(id int) error
 	GetAdminDetail(id int) (response.ArticleDetail, error)
+	GetFrontList(params *request.HomeForm) (int, []response.ArticleDetail)
+}
+
+//前台文章列表
+func (a *article) GetFrontList(params *request.HomeForm) (int, []response.ArticleDetail) {
+	searchParams := request.ArticleSearchForm{
+		ArticleName: params.ArticleName,
+		CategoryId:  params.CategoryId,
+		IsShow:      1,
+		IsRecycle:   0,
+		IsDraft:     0,
+		Page:        params.Page,
+		Tag:         params.Tag,
+		PageSize:    params.PageSize,
+	}
+	total := a.ArticleDao.GetRecordNumber(&searchParams)
+	list := []response.ArticleDetail{}
+	if total > 0 {
+		fileds := "articles.id,article_name,category_id,view,comment,created_at,updated_at,category_name,description"
+		list = a.ArticleDao.GetList(&searchParams, fileds)
+		for i, v := range list {
+			v.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
+			v.UpdatedAtFormat = v.UpdatedAt.Format("2006-01-02 15:04:05")
+			list[i] = v
+		}
+	}
+	return total, list
 }
 
 type article struct {
@@ -22,6 +49,7 @@ type article struct {
 	ArticleRelationDao dao.ArticleRelationDao
 }
 
+// 后台文章详情
 func (a *article) GetAdminDetail(id int) (response.ArticleDetail, error) {
 	detail := response.ArticleDetail{}
 	article := a.ArticleDao.GetById(id, "*")
@@ -102,7 +130,8 @@ func (a *article) GetAdminList(params *request.ArticleSearchForm) (int, []respon
 	total := a.ArticleDao.GetRecordNumber(params)
 	list := []response.ArticleDetail{}
 	if total > 0 {
-		list = a.ArticleDao.GetList(params)
+		fileds := "articles.id,article_name,articles.is_show,category_id,created_at,updated_at,category_name,deleted_at"
+		list = a.ArticleDao.GetList(params, fileds)
 		for i, v := range list {
 			v.CreatedAtFormat = v.CreatedAt.Format("2006-01-02 15:04:05")
 			v.UpdatedAtFormat = v.UpdatedAt.Format("2006-01-02 15:04:05")

@@ -1,0 +1,53 @@
+{{ define "posts/article.html" }}
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    {{ template "layouts/_head.html" . }}
+</head>
+
+<body class="d-flex flex-column h-100">
+
+    {{ template "layouts/_header.html" . }}
+
+    <main class="flex-shrink-0 my-4">
+        <div class="container text-dark">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="container p-4 bg-white shadow">
+                        <h2>{{ .article.ArticleName }}</h2>
+                        <hr>
+                        <article class="markdown-body" id="content">
+                        </article>
+                    </div>
+                </div>
+                <div class="col-md-3" >{{ template "posts/_right.html" . }}</div>
+            </div>
+        </div>
+
+    </main>
+
+    {{ template "layouts/_footer.html" . }}
+    {{ template "layouts/_js.html" . }}
+
+    <script src="/static/showdown/dist/showdown.min.js"></script>
+{{/*    <script src="/static/highlight/src/highlight.site.pack.js"></script>*/}}
+    <script src="/static/highlight/src/highlight.min.js"></script>
+
+    <script>
+        $(function () {
+            var converter = new showdown.Converter();
+            var   html      = converter.makeHtml({{ .article.Content }});
+            $('#content').html(html);
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightBlock(block);
+            });
+
+        });
+    </script>
+
+
+</body>
+
+</html>
+{{ end }}

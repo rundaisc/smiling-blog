@@ -1,0 +1,64 @@
+{{ define "posts/_right.html"}}
+<div class="card mb-2 border-white bg-light text-secondary">
+		<div class="card-body shadow">
+			<div class="card-title text-center">
+				归档
+			</div>
+			<hr>
+
+			<small>
+				<ul class="list-unstyled">
+					{{ range $k, $v := .categories }}
+						<li class="mb-2"><a  href="/category/{{ $v.ID }}">
+								{{ $v.CategoryName }}
+								<span class="badge badge-secondary">{{ $v.Number }}</span>
+							</a></li>
+					{{ end }}
+				</ul>
+			</small>
+		</div>
+</div>
+<div class="card mb-2 border-white bg-light text-secondary">
+	<div class="card-body shadow">
+		<div class="card-title text-center">
+			标签
+		</div>
+		<hr>
+		{{ range $k, $v := .tagList }}
+		<a class="btn btn-light btn-sm my-1 mr-1 shadow rounded" href="/tag/{{ $v.Tag }}">
+			<span class="text-secondary font-weight-bold">{{ $v.Tag }}</span>
+			<span class="badge badge-secondary">{{ $v.Number }}</span>
+		</a>
+		{{ end }}
+	</div>
+</div>
+
+<div class="card mb-2 border-white bg-light text-secondary">
+	<div class="card-body shadow">
+		<div class="card-title text-center">
+			公众号
+		</div>
+		<hr>
+		<small>
+			<img style="width: 100%" src="{{ .siteInfo.Cover }}">
+		</small>
+	</div>
+</div>
+<div class="card mb-2 border-white bg-light text-secondary">
+	<div class="card-body shadow">
+		<div class="card-title text-center">
+			友情链接
+		</div>
+		<hr>
+		<small>
+			<ul class="list-unstyled">
+				{{ range $k, $v := .flinkList }}
+				<li class="mb-2"><a target="_blank" href="{{ $v.Url }}">{{ $v.LinkName }}</a></li>
+				{{ end }}
+			</ul>
+		</small>
+	</div>
+</div>
+
+
+	{{ end }}

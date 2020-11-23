@@ -7,6 +7,7 @@ import (
 
 type CategoryDao interface {
 	GetList() []entity.Category
+	GetFrontList() []entity.Category
 	GetById(id int) *entity.Category
 	CreateCategory(category *entity.Category) error
 	DeleteById(id int) error
@@ -51,5 +52,13 @@ func (slf *category) GetList() []entity.Category {
 	list := []entity.Category{}
 	category := entity.Category{}
 	slf.db.DB().Model(&category).Scan(&list)
+	return list
+}
+
+// 导航列表
+func (slf *category) GetFrontList() []entity.Category {
+	list := []entity.Category{}
+	category := entity.Category{}
+	slf.db.DB().Model(&category).Where("is_show=1").Select("category_name,id").Scan(&list)
 	return list
 }

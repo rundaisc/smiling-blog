@@ -11,6 +11,7 @@ import (
 
 type NavServices interface {
 	GetList() []entity.Nav
+	GetFrontList() []entity.Nav
 	Save(params *request.NavSave) tools.ResponseCode
 	Delete(id int) tools.ResponseCode
 }
@@ -23,6 +24,11 @@ func NewNavServices() NavServices {
 	return &nav{
 		NavDao: dao.NewNavDao(),
 	}
+}
+
+// 所有导航列表
+func (slf *nav) GetFrontList() []entity.Nav {
+	return slf.NavDao.GetFrontList()
 }
 
 // 所有导航列表

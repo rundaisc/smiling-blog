@@ -1,0 +1,79 @@
+{{ define "posts/index.html" }}
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+	{{ template "layouts/_head.html" . }}
+	<link rel="stylesheet" href="/static/css/gitlab.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+
+	{{ template "layouts/_header.html" . }}
+
+	<main class="flex-shrink-0 my-4">
+		<div class="container text-secondary">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="container p-3">
+						{{ if .articleNumber }}
+						<ul class="list-unstyled article-list">
+							{{ range $index, $post := .articeList }}
+							<li class="media mb-3">
+								<div class="media-body">
+									<h1 class="mb-1"><a class="text-dark" href="/posts/{{ $post.ID }}">{{ $post.ArticleName }} </a></h1>
+									<p>
+										<a class="text-secondary" href="/category/{{ $post.CategoryId }}">{{ $post.CategoryName }}</a>
+										  <small>views: {{ $post.View }}</small>
+										 <small>update: {{ $post.UpdatedAtFormat }}</small>
+									</p>
+									<p>
+										{{ $post.Description }}
+									</p>
+								</div>
+							</li>
+							{{ end }}
+						</ul>
+						{{ end }}
+					</div>
+				</div>
+				<div class="col-md-3">
+					{{ template "posts/_right.html" . }}
+				</div>
+			</div>
+			<div>
+				<ul id="pagination" class="pagination text-secondary">
+				</ul>
+			</div>
+		</div>
+
+
+	</main>
+
+	{{ template "layouts/_footer.html" . }}
+	{{ template "layouts/_js.html" . }}
+
+	{{/* 自定义 js 写在这个下面 */}}
+<script>
+	$(function () {
+		$('#pagination').pagination({
+			pages: Math.ceil({{.articleNumber}}/{{.pageSize}} ),
+			edges: 2,
+			// cssStyle: 'pagination-sm',
+			displayedPages: 5,
+			onPageClick: function(pageNumber, event) {
+				location.reload()
+			},
+			// onInit: function(getid) {
+			// 	//刷新时调用
+			// 	//alert(getid);
+			// }
+
+		});
+
+	});
+
+</script>
+</body>
+
+</html>
+{{ end }}

@@ -10,6 +10,7 @@ import (
 
 type CategoryServices interface {
 	GetList() []entity.Category
+	FrontList() []entity.Category
 	Save(params *request.CategorySave) tools.ResponseCode
 	Delete(id int) tools.ResponseCode
 }
@@ -22,6 +23,11 @@ func NewCategoryServices() CategoryServices {
 	return &category{
 		categoryDao: dao.NewCategoryDao(),
 	}
+}
+
+// 所有列表
+func (slf *category) FrontList() []entity.Category {
+	return slf.categoryDao.GetList()
 }
 
 // 所有列表

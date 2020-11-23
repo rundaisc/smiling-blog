@@ -1,0 +1,16 @@
+{{ define "layouts/_head.html" }}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="Keywords" content="{{ .siteInfo.Keyword }}" />
+    <meta name="description" content="{{ .siteInfo.Description }}" />
+
+    <title> {{ .siteInfo.Title }}{{if .article.ArticleName}} _{{.article.ArticleName}} {{end }}</title>
+
+    <!-- Bootstrap CSS -->
+
+    <link rel="stylesheet" href="/static/css/app.css">
+
+{{ end }}

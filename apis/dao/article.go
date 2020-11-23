@@ -10,7 +10,7 @@ import (
 
 type ArticleDao interface {
 	GetRecordNumber(params *request.ArticleSearchForm) int
-	GetList(params *request.ArticleSearchForm) []response.ArticleDetail
+	GetList(params *request.ArticleSearchForm, fileds string) []response.ArticleDetail
 	GetById(id int, fields string) *entity.Article
 	UpdateById(id int, data map[string]interface{}, trans interface{}) error
 	Create(art *entity.Article, trans interface{}) error
@@ -47,9 +47,9 @@ func (a *article) GetById(id int, fields string) *entity.Article {
 }
 
 // 获取列表
-func (a *article) GetList(params *request.ArticleSearchForm) []response.ArticleDetail {
+func (a *article) GetList(params *request.ArticleSearchForm, fileds string) []response.ArticleDetail {
 	list := []response.ArticleDetail{}
-	fileds := "articles.id,article_name,articles.is_show,category_id,created_at,updated_at,category_name,deleted_at"
+
 	a.getQueryBuild(params).Model(entity.Article{}).Select(fileds).Joins("left join categories on articles.category_id=categories.id").Limit(params.PageSize).Offset(params.PageSize * (params.Page - 1)).Order("created_at desc").Scan(&list)
 	return list
 }
@@ -78,6 +78,12 @@ func (a *article) getQueryBuild(params *request.ArticleSearchForm) *gorm.DB {
 	if params.IsRecycle > 0 {
 		query = query.Unscoped().Where("articles.deleted_at is not null ")
 	}
+	if params.Tag != "" {
+		tagIds := []int64{}
+		a.db.DB().Table("article_tag_relations").Where("tag=?", params.Tag).Pluck("article_id", &tagIds)
+		query = query.Where("articles.id  in (?)", tagIds)
+	}
+
 	return query
 }
 
