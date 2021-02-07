@@ -3,14 +3,14 @@
 		<div id="page-top"></div>
 		<nav class="navbar navbar-expand-md navbar-light shadow bg-light">
 			<div class="container">
-				<a class="navbar-brand" href="/" target="_balnk">{{ .siteInfo.Title }}</a>
+				<a class="navbar-brand" href="/" target="_balnk">{{ .public.SiteInfo.Title }}</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars"
 					aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbars">
 					<ul class="navbar-nav mr-auto">
-						{{ range $i, $nav := .navList }}
+						{{ range $i, $nav := .public.NavList }}
 						<li class="nav-item mr-3 ">
 							<a class="nav-link {{$nav.Active}}" href="{{ $nav.Url }}" title="{{ $nav.NavName }}">{{ $nav.NavName }}</a>
 						</li>

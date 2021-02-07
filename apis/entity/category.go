@@ -7,6 +7,12 @@ type Category struct {
 	IsShow       int    `gorm:"type:tinyint(2);default:1" json:"is_show"`
 }
 
+type FrontCategory struct {
+	ID           int    `json:"id"`
+	CategoryName string `json:"category_name"`
+	Number       int    `json:"number"`
+}
+
 func (n *Category) TableName() string {
 	return "categories"
 }

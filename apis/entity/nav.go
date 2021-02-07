@@ -9,6 +9,11 @@ type Nav struct {
 	IsShow     int    `gorm:"type:tinyint(2);default:1" json:"is_show"`
 }
 
+type FontNavList struct {
+	Nav
+	Active string `json:"active"`
+}
+
 func (n *Nav) TableName() string {
 	return "navs"
 }

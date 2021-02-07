@@ -36,7 +36,3 @@ func configInit() {
 func logInit() {
 	slog.InitLogger(config.Configs.Log)
 }
-
-func MysqlInit() {
-
-}

@@ -11,7 +11,7 @@ import (
 
 type NavServices interface {
 	GetList() []entity.Nav
-	GetFrontList() []entity.Nav
+	GetFrontList(path string) []entity.FontNavList
 	Save(params *request.NavSave) tools.ResponseCode
 	Delete(id int) tools.ResponseCode
 }
@@ -27,8 +27,15 @@ func NewNavServices() NavServices {
 }
 
 // 所有导航列表
-func (slf *nav) GetFrontList() []entity.Nav {
-	return slf.NavDao.GetFrontList()
+func (slf *nav) GetFrontList(path string) []entity.FontNavList {
+	list := slf.NavDao.GetFrontList()
+	for i, v := range list {
+		if v.Url == path {
+			v.Active = "active"
+		}
+		list[i] = v
+	}
+	return list
 }
 
 // 所有导航列表

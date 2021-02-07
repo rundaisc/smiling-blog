@@ -10,7 +10,7 @@ import (
 
 type CategoryServices interface {
 	GetList() []entity.Category
-	FrontList() []entity.Category
+	FrontList() []entity.FrontCategory
 	Save(params *request.CategorySave) tools.ResponseCode
 	Delete(id int) tools.ResponseCode
 }
@@ -26,8 +26,18 @@ func NewCategoryServices() CategoryServices {
 }
 
 // 所有列表
-func (slf *category) FrontList() []entity.Category {
-	return slf.categoryDao.GetList()
+func (slf *category) FrontList() []entity.FrontCategory {
+	list := slf.categoryDao.GetList()
+	outList := []entity.FrontCategory{}
+	for _, v := range list {
+		temp := entity.FrontCategory{}
+		temp.ID = v.ID
+		temp.CategoryName = v.CategoryName
+		temp.Number = 0
+		outList = append(outList, temp)
+	}
+	return outList
+
 }
 
 // 所有列表

@@ -8,7 +8,7 @@
 
 			<small>
 				<ul class="list-unstyled">
-					{{ range $k, $v := .categories }}
+					{{ range $k, $v := .public.CategoryList }}
 						<li class="mb-2"><a  href="/category/{{ $v.ID }}">
 								{{ $v.CategoryName }}
 								<span class="badge badge-secondary">{{ $v.Number }}</span>
@@ -40,7 +40,7 @@
 		</div>
 		<hr>
 		<small>
-			<img style="width: 100%" src="{{ .siteInfo.Cover }}">
+			<img style="width: 100%" src="{{ .public.SiteInfo.Cover }}">
 		</small>
 	</div>
 </div>

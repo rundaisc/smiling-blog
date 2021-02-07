@@ -7,7 +7,7 @@ import (
 
 type NavDao interface {
 	GetList() []entity.Nav
-	GetFrontList() []entity.Nav
+	GetFrontList() []entity.FontNavList
 	GetById(id int) *entity.Nav
 	CreateNav(nav *entity.Nav) error
 	DeleteById(id int) error
@@ -55,8 +55,8 @@ func (slf *nav) GetList() []entity.Nav {
 }
 
 // 导航列表
-func (slf *nav) GetFrontList() []entity.Nav {
-	list := []entity.Nav{}
+func (slf *nav) GetFrontList() []entity.FontNavList {
+	list := []entity.FontNavList{}
 	nav := entity.Nav{}
 	slf.db.DB().Model(&nav).Where("is_show=?", 1).Select("nav_name,url").Scan(&list)
 	return list

@@ -7,7 +7,7 @@ import (
 
 type SiteDao interface {
 	Save(info *entity.Site) error
-	GetInfo() *entity.Site
+	GetInfo() entity.Site
 }
 
 type Site struct {
@@ -27,8 +27,8 @@ func (sd *Site) Save(info *entity.Site) error {
 }
 
 // 获取site信息
-func (sd *Site) GetInfo() *entity.Site {
+func (sd *Site) GetInfo() entity.Site {
 	siteInfo := entity.Site{}
 	sd.db.DB().First(&siteInfo)
-	return &siteInfo
+	return siteInfo
 }

@@ -39,11 +39,14 @@ func (slf *Home) Index(c *gin.Context) {
 	params.CategoryId = c.GetInt("categoryId")
 	params.Tag = c.GetString("tag")
 	total, list := slf.ArticleServices.GetFrontList(&params)
-	c.HTML(http.StatusOK, "posts/index.html", gin.H{
+	pub, _ := c.Get("public")
+	data := gin.H{
 		"articleNumber": total,
 		"articeList":    list,
 		"currentPage":   params.Page,
 		"pageSize":      params.PageSize,
-	})
+		"public":        pub,
+	}
+	c.HTML(http.StatusOK, "posts/index.html", data)
 
 }

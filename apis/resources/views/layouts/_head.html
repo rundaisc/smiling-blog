@@ -4,10 +4,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <meta name="Keywords" content="{{ .siteInfo.Keyword }}" />
-    <meta name="description" content="{{ .siteInfo.Description }}" />
+    <meta name="Keywords" content="{{ .public.SiteInfo.Keyword }}" />
+    <meta name="description" content="{{ .public.SiteInfo.Description }}" />
 
-    <title> {{ .siteInfo.Title }}{{if .article.ArticleName}} _{{.article.ArticleName}} {{end }}</title>
+    <title> {{ .public.SiteInfo.Title }}{{if .article.ArticleName}} _{{.article.ArticleName}} {{end }}</title>
 
     <!-- Bootstrap CSS -->
 

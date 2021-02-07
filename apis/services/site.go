@@ -8,7 +8,7 @@ import (
 
 type SiteServices interface {
 	Save(params *request.SiteForm) error
-	GetInfo() *entity.Site
+	GetInfo() entity.Site
 }
 
 type Site struct {
@@ -29,10 +29,10 @@ func (site *Site) Save(params *request.SiteForm) error {
 	siteInfo.Code = params.Code
 	siteInfo.Cover = params.Cover
 	siteInfo.Description = params.Description
-	return site.SiteDao.Save(siteInfo)
+	return site.SiteDao.Save(&siteInfo)
 }
 
 // 获取site信息
-func (site *Site) GetInfo() *entity.Site {
+func (site *Site) GetInfo() entity.Site {
 	return site.SiteDao.GetInfo()
 }

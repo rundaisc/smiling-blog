@@ -62,10 +62,10 @@ func GetApp() *gin.Engine {
 
 	}
 	home := controller.NewHome()
-	app.GET("/", home.Index).Use(middleware.FrontParams())
-	app.GET("/category/:categoryId", home.Index)
-	app.GET("/tag/:tag", home.Index)
-	app.GET("/posts/:articleId", home.Index)
+	app.GET("/", middleware.FrontParams, home.Index)
+	app.GET("/category/:categoryId", middleware.FrontParams, home.Index)
+	app.GET("/tag/:tag", middleware.FrontParams, home.Index)
+	app.GET("/posts/:articleId", middleware.FrontParams, home.Index)
 
 	return app
 }
