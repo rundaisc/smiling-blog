@@ -17,11 +17,13 @@ type CategoryServices interface {
 
 type category struct {
 	categoryDao dao.CategoryDao
+	articleDao  dao.ArticleDao
 }
 
 func NewCategoryServices() CategoryServices {
 	return &category{
 		categoryDao: dao.NewCategoryDao(),
+		articleDao:  dao.NewArticleDao(),
 	}
 }
 
@@ -29,12 +31,22 @@ func NewCategoryServices() CategoryServices {
 func (slf *category) FrontList() []entity.FrontCategory {
 	list := slf.categoryDao.GetList()
 	outList := []entity.FrontCategory{}
+	ids := []int{}
 	for _, v := range list {
 		temp := entity.FrontCategory{}
 		temp.ID = v.ID
 		temp.CategoryName = v.CategoryName
 		temp.Number = 0
 		outList = append(outList, temp)
+		ids = append(ids, v.ID)
+	}
+	if len(ids) > 0 {
+		articleNumber := slf.articleDao.GetArticleNumberByCategory(ids)
+		if len(articleNumber) > 0 {
+			for i, v := range outList {
+				outList[i].Number = articleNumber[v.ID]
+			}
+		}
 	}
 	return outList
 

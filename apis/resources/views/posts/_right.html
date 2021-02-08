@@ -24,7 +24,7 @@
 			标签
 		</div>
 		<hr>
-		{{ range $k, $v := .tagList }}
+		{{ range $k, $v := .public.TagList }}
 		<a class="btn btn-light btn-sm my-1 mr-1 shadow rounded" href="/tag/{{ $v.Tag }}">
 			<span class="text-secondary font-weight-bold">{{ $v.Tag }}</span>
 			<span class="badge badge-secondary">{{ $v.Number }}</span>
@@ -52,7 +52,7 @@
 		<hr>
 		<small>
 			<ul class="list-unstyled">
-				{{ range $k, $v := .flinkList }}
+				{{ range $k, $v := .public.FlinkList }}
 				<li class="mb-2"><a target="_blank" href="{{ $v.Url }}">{{ $v.LinkName }}</a></li>
 				{{ end }}
 			</ul>

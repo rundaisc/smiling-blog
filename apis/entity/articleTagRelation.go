@@ -6,6 +6,11 @@ type ArticleTagRelation struct {
 	ArticleId int    `json:"article_id"`
 }
 
+type FrontTag struct {
+	Tag    string `json:"tag"`
+	Number int    `json:"number"`
+}
+
 func (a *ArticleTagRelation) TableName() string {
 	return "article_tag_relations"
 }

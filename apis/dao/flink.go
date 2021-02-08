@@ -7,6 +7,7 @@ import (
 
 type FlinkDao interface {
 	GetList() []entity.Flink
+	GetFrontList() []entity.Flink
 	GetById(id int) *entity.Flink
 	SaveLink(flink *entity.Flink) error
 	UpdateLink(flink *entity.Flink, update map[string]interface{}) error
@@ -51,5 +52,13 @@ func (slf *flink) GetList() []entity.Flink {
 	list := []entity.Flink{}
 	flink := entity.Flink{}
 	slf.db.DB().Model(&flink).Scan(&list)
+	return list
+}
+
+// 前台链接列表
+func (slf *flink) GetFrontList() []entity.Flink {
+	list := []entity.Flink{}
+	flink := entity.Flink{}
+	slf.db.DB().Model(&flink).Where("is_show=1").Scan(&list)
 	return list
 }

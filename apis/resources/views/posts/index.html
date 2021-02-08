@@ -21,9 +21,8 @@
 								<div class="media-body">
 									<h1 class="mb-1"><a class="text-dark" href="/posts/{{ $post.ID }}">{{ $post.ArticleName }} </a></h1>
 									<p>
-										<a class="text-secondary" href="/category/{{ $post.CategoryId }}">{{ $post.CategoryName }}</a>
-										  <small>views: {{ $post.View }}</small>
-										 <small>update: {{ $post.UpdatedAtFormat }}</small>
+										<a class="text-secondary " href="/category/{{ $post.CategoryId }}">{{ $post.CategoryName }}</a>
+										&nbsp;&nbsp;<small>{{ $post.UpdatedAtFormat }}</small>
 									</p>
 									<p>
 										{{ $post.Description }}

@@ -11,6 +11,7 @@ type ArticleRelationDao interface {
 	DeleteByArticleId(aid int, trans interface{}) error
 	Create(aid int, tagList []string, trans interface{}) error
 	GetTaglistById(id int) []entity.ArticleTagRelation
+	FrontShow() []entity.FrontTag
 }
 
 type articleRelation struct {
@@ -51,6 +52,14 @@ func (a articleRelation) DeleteByArticleId(aid int, trans interface{}) error {
 		return db.Where("article_id=?", aid).Delete(entity.ArticleTagRelation{}).Error
 	}
 	return a.db.DB().Where("article_id=?", aid).Delete(entity.ArticleTagRelation{}).Error
+}
+
+//前台展示标签
+func (a articleRelation) FrontShow() []entity.FrontTag {
+	list := []entity.FrontTag{}
+	a.db.DB().Table("article_tag_relations").Joins("left join articles as a on a.id=article_tag_relations.article_id").
+		Where("a.is_show=1 and a.deleted_at is null").Select("tag,count(*) as number").Group("tag").Scan(&list)
+	return list
 }
 
 func NewArticleRelationDao() ArticleRelationDao {

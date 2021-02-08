@@ -16,6 +16,12 @@ type ArticleServices interface {
 	Delete(id int) error
 	GetAdminDetail(id int) (response.ArticleDetail, error)
 	GetFrontList(params *request.HomeForm) (int, []response.ArticleDetail)
+	GetArticleNumberByCategory(categoryIds []int) map[int]int
+}
+
+//获取分类的文章数据
+func (a *article) GetArticleNumberByCategory(categoryIds []int) map[int]int {
+	return a.ArticleDao.GetArticleNumberByCategory(categoryIds)
 }
 
 //前台文章列表

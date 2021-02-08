@@ -15,6 +15,24 @@ type ArticleDao interface {
 	UpdateById(id int, data map[string]interface{}, trans interface{}) error
 	Create(art *entity.Article, trans interface{}) error
 	DeleteById(id int, trans interface{}) error
+	GetArticleNumberByCategory(categoryIds []int) map[int]int
+}
+
+//获取分类的文章数据
+func (a *article) GetArticleNumberByCategory(categoryIds []int) map[int]int {
+	type scan struct {
+		CategoryId int
+		Number     int
+	}
+	scanList := []scan{}
+	a.db.DB().Model(entity.Article{}).Where("category_id in (?) and is_show=1", categoryIds).Select("category_id,count(*) as number").
+		Group("category_id").Scan(&scanList)
+	out := map[int]int{}
+	for _, v := range scanList {
+		out[v.CategoryId] = v.Number
+
+	}
+	return out
 }
 
 type article struct {
@@ -50,7 +68,9 @@ func (a *article) GetById(id int, fields string) *entity.Article {
 func (a *article) GetList(params *request.ArticleSearchForm, fileds string) []response.ArticleDetail {
 	list := []response.ArticleDetail{}
 
-	a.getQueryBuild(params).Model(entity.Article{}).Select(fileds).Joins("left join categories on articles.category_id=categories.id").Limit(params.PageSize).Offset(params.PageSize * (params.Page - 1)).Order("created_at desc").Scan(&list)
+	a.getQueryBuild(params).Model(entity.Article{}).Select(fileds).
+		Joins("left join categories on articles.category_id=categories.id").Limit(params.PageSize).
+		Offset(params.PageSize * (params.Page - 1)).Order("created_at desc").Scan(&list)
 	return list
 }
 

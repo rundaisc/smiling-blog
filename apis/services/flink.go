@@ -10,6 +10,7 @@ import (
 
 type FlinkServices interface {
 	GetList() []entity.Flink
+	GetFrontList() []entity.Flink
 	Save(params *request.FlinkSave) tools.ResponseCode
 	Delete(id int) tools.ResponseCode
 }
@@ -24,12 +25,17 @@ func NewFlinkServices() FlinkServices {
 	}
 }
 
-// 所有导航列表
+// 所有链接列表
 func (slf *flink) GetList() []entity.Flink {
 	return slf.FlinkDao.GetList()
 }
 
-// 保存导航信息
+// 前台链接列表
+func (slf *flink) GetFrontList() []entity.Flink {
+	return slf.FlinkDao.GetList()
+}
+
+// 保存链接信息
 func (slf *flink) Save(params *request.FlinkSave) tools.ResponseCode {
 	link := &entity.Flink{}
 	if params.Id > 0 {
